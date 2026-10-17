@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bazooka</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <div class="logo"><h1>Bazooka</h1></div>
+
+      <nav class="main-nav">
+        <a href="#">Home</a>
+        <a href="#heero">Menu</a>
+
+        <button id="open-cart" class="cart-button" type="button">
+          🛒 Cart <span id="cart-count">0</span>
+        </button>
+
+        <div class="country-choice">
+          <select id="country" aria-label="Choose country">
+            <option value="" selected disabled>Choose Country</option>
+            <option value="Egypt">Egypt</option>
+            <option value="Saudi Arabia">Saudi Arabia</option>
+            <option value="UAE">UAE</option>
+          </select>
+        </div>
+
+        <div class="profile-choice">
+          <button
+            id="profile-button"
+            type="button"
+            aria-expanded="false"
+            aria-controls="profile-menu"
+          >
+            👤 Profile
+          </button>
+
+          <div id="profile-menu" class="profile-menu">
+            <div class="profile-header">
+              <div class="profile-icon">👤</div>
+              <div>
+                <h3>My Profile</h3>
+                <p>Bazooka Customer</p>
+              </div>
+            </div>
+
+            <hr />
+
+            <div class="profile-details">
+              <p><strong>Name:</strong> Farida</p>
+              <p>
+                <strong>Country:</strong>
+                <span id="profile-country">Egypt</span>
+              </p>
+            </div>
+
+            <hr />
+
+            <a href="#" id="orders-link">📦 Orders</a>
+            <a href="#" id="favorites-link">⭐ Favorites</a>
+            <button id="logout-button" class="logout" type="button">
+              Log Out
+            </button>
+            <button id="close-profile" class="close-profile" type="button">
+              Close
+            </button>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Overlay for the cart -->
+    <div id="cart-overlay" class="cart-overlay"></div>
+
+    <!-- Shopping Cart -->
+    <aside id="cart" class="cart" aria-label="Shopping cart">
+      <div class="cart-header">
+        <h2>Shopping Cart</h2>
+        <button id="close-cart" type="button" aria-label="Close cart">
+          &times;
+        </button>
+      </div>
+
+      <div id="cart-items" class="cart-items">
+        <p class="empty-cart">Your cart is empty</p>
+      </div>
+
+      <div class="cart-footer">
+        <div class="total">
+          <span>Total</span>
+          <strong><span id="cart-total">0</span> EGP</strong>
+        </div>
+        <button class="checkout-btn" type="button">Checkout</button>
+      </div>
+    </aside>
+
+    <!-- Search -->
+    <div class="search-box">
+      <input
+        type="text"
+        id="search"
+        placeholder="Search for food..."
+        aria-label="Search for food"
+      />
+      <button id="search-btn" type="button">Search</button>
+    </div>
+
+    <!-- Branch Info -->
+    <div class="branch">
+      <span>Current branch Bazooka</span>
+      <a href="#" id="change-branch">Change</a>
+    </div>
+
+    <!-- Categories -->
+    <nav class="categories" aria-label="Food categories">
+      <a href="#" class="active">Offers</a>
+      <a href="#">Chicken Sandwich</a>
+      <a href="#">Beef Sandwich</a>
+      <a href="#">Family Meal</a>
+      <a href="#">Meals</a>
+      <a href="#">Extras</a>
+      <a href="#">Appetizers</a>
+      <a href="#">Soft Drinks</a>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="heero">
+      <div>
+        <h2>CRISPY CHICKEN</h2>
+        <p>Delicious chicken, fresh and crispy!</p>
+        <button type="button">Order Now</button>
+      </div>
+      <img
+        src="./Fooduice Recipes _ Food _ Raising cane’s chicken tenders by @hescooks Marinade ingredients_ 450 g chicken breast 120 ml milk + 1 tbsp vinegar 1 egg 1 tsp salt_.. _ Instagram"
+        alt="Crispy Chicken"
+      />
+    </section>
+
+    <!-- Offers -->
+    <section class="offers">
+      <h2>🔥 Today's Offers</h2>
+      <div class="offer-card">
+        <h3>Chicken Meal</h3>
+        <p>Chicken Sandwich + Fries + Drink</p>
+        <strong>199 EGP</strong>
+        <button
+          class="add-cart"
+          type="button"
+          data-id="3"
+          data-name="Chicken Meal"
+          data-price="199"
+        >
+          Add to Cart
+        </button>
+      </div>
+    </section>
+
+    <!-- Products -->
+    <section class="products-container" aria-label="Menu products">
+      <div class="product-card">
+        <img
+          src="./Fooduice Recipes _ Food _ Raising cane’s chicken tenders by @hescooks Marinade ingredients_ 450 g chicken breast 120 ml milk + 1 tbsp vinegar 1 egg 1 tsp salt_.. _ Instagram"
+          alt="Chicken Sandwich"
+        />
+        <h3>Chicken Sandwich</h3>
+        <p>Crispy chicken sandwich with cheese and sauce.</p>
+        <div class="product-bottom">
+          <span class="price">150 EGP</span>
+          <button
+            class="add-cart"
+            type="button"
+            data-id="1"
+            data-name="Chicken Sandwich"
+            data-price="150"
+          >
+            Add to Cart
+          </button>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <img
+          src="./Fooduice Recipes _ Food _ Raising cane’s chicken tenders by @hescooks Marinade ingredients_ 450 g chicken breast 120 ml milk + 1 tbsp vinegar 1 egg 1 tsp salt_.. _ Instagram"
+          alt="Beef Burger"
+        />
+        <h3>Beef Burger</h3>
+        <p>Beef burger with cheese and Bazooka sauce.</p>
+        <div class="product-bottom">
+          <span class="price">165 EGP</span>
+          <button
+            class="add-cart"
+            type="button"
+            data-id="2"
+            data-name="Beef Burger"
+            data-price="165"
+          >
+            Add to Cart
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <script src="./main.js"></script>
+  </body>
+</html>
