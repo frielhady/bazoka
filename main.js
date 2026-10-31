@@ -132,7 +132,7 @@ const menuProducts = [
     description: "Crunchy golden onion rings.",
     price: 40,
     category: "appetizers",
-    image: "./Amazing.jpg ",
+    image: "./Amazing.jpg",
   },
   {
     id: "app3",
@@ -198,7 +198,34 @@ const categoryNames = {
 const productsContainer = document.getElementById("products-container");
 const categoryHeading = document.getElementById("category-heading");
 const categoryButtons = document.querySelectorAll(".categories button");
+const search = document.getElementById("search");
+const searchButton = document.getElementById("search-btn");
 let currentCategory = "offers";
+
+// ================= PRODUCT CARDS =================
+function createProductCard(product) {
+  const card = document.createElement("div");
+  card.className = "product-card";
+  card.dataset.category = product.category;
+  card.innerHTML = `
+    <img src="${product.image}" alt="">
+    <h3></h3>
+    <p></p>
+    <div class="product-bottom">
+      <span class="price"></span>
+      <button class="add-cart" type="button">Add to Cart</button>
+    </div>
+  `;
+  card.querySelector("img").alt = product.name;
+  card.querySelector("h3").textContent = product.name;
+  card.querySelector("p").textContent = product.description;
+  card.querySelector(".price").textContent = `${product.price} EGP`;
+  const addButton = card.querySelector(".add-cart");
+  addButton.dataset.id = product.id;
+  addButton.dataset.name = product.name;
+  addButton.dataset.price = product.price;
+  return card;
+}
 
 function renderProducts(category) {
   currentCategory = category;
@@ -206,37 +233,16 @@ function renderProducts(category) {
   const filteredProducts = menuProducts.filter(
     (product) => product.category === category,
   );
-
   productsContainer.innerHTML = "";
-  if (filteredProducts.length === 0) {
+
+  if (!filteredProducts.length) {
     productsContainer.innerHTML =
       '<p class="empty-cart">No products in this category yet.</p>';
     return;
   }
-
-  filteredProducts.forEach((product) => {
-    const card = document.createElement("div");
-    card.className = "product-card";
-    card.dataset.category = product.category;
-    card.innerHTML = `
-      <img src="${product.image}" alt="">
-      <h3></h3>
-      <p></p>
-      <div class="product-bottom">
-        <span class="price"></span>
-        <button class="add-cart" type="button">Add to Cart</button>
-      </div>
-    `;
-    card.querySelector("img").alt = product.name;
-    card.querySelector("h3").textContent = product.name;
-    card.querySelector("p").textContent = product.description;
-    card.querySelector(".price").textContent = `${product.price} EGP`;
-    const addButton = card.querySelector(".add-cart");
-    addButton.dataset.id = product.id;
-    addButton.dataset.name = product.name;
-    addButton.dataset.price = product.price;
-    productsContainer.appendChild(card);
-  });
+  filteredProducts.forEach((product) =>
+    productsContainer.appendChild(createProductCard(product)),
+  );
 }
 
 categoryButtons.forEach((button) => {
@@ -252,7 +258,6 @@ categoryButtons.forEach((button) => {
 // ================= CART =================
 const cart = [];
 const orders = [];
-
 const cartItems = document.getElementById("cart-items");
 const cartTotal = document.getElementById("cart-total");
 const cartCount = document.getElementById("cart-count");
@@ -260,12 +265,25 @@ const cartBox = document.getElementById("cart");
 const overlay = document.getElementById("cart-overlay");
 const openCart = document.getElementById("open-cart");
 const closeCart = document.getElementById("close-cart");
+const checkoutButton = document.querySelector(".checkout-btn");
+
+// Add the mobile number field inside the existing cart footer.
+// No existing HTML IDs are changed.
+const phoneField = document.createElement("div");
+phoneField.className = "customer-phone-field";
+phoneField.innerHTML = `
+  <label for="customer-phone">Mobile number for your order</label>
+  <input id="customer-phone" type="tel" inputmode="tel" autocomplete="tel"
+    placeholder="e.g. 01012345678" maxlength="20" required>
+  <small>Enter a number the restaurant can contact you on.</small>
+`;
+checkoutButton.parentElement.insertBefore(phoneField, checkoutButton);
+const customerPhone = document.getElementById("customer-phone");
 
 openCart.addEventListener("click", () => {
   cartBox.classList.add("active");
   overlay.classList.add("active");
 });
-
 closeCart.addEventListener("click", closeShoppingCart);
 overlay.addEventListener("click", closeShoppingCart);
 
@@ -274,7 +292,6 @@ function closeShoppingCart() {
   overlay.classList.remove("active");
 }
 
-// Event delegation means Add to Cart keeps working after changing categories.
 productsContainer.addEventListener("click", (event) => {
   const button = event.target.closest(".add-cart");
   if (!button) return;
@@ -283,10 +300,8 @@ productsContainer.addEventListener("click", (event) => {
   const name = button.dataset.name;
   const price = Number(button.dataset.price);
   const existingItem = cart.find((item) => item.id === id);
-
   if (existingItem) existingItem.quantity++;
   else cart.push({ id, name, price, quantity: 1 });
-
   updateCart();
 });
 
@@ -298,7 +313,6 @@ function updateCart() {
   cart.forEach((item) => {
     total += item.price * item.quantity;
     count += item.quantity;
-
     const itemBox = document.createElement("div");
     itemBox.className = "cart-item";
     itemBox.innerHTML = `
@@ -321,31 +335,25 @@ function updateCart() {
       item.quantity++;
       updateCart();
     });
-
     itemBox.querySelector(".minus").addEventListener("click", () => {
       item.quantity--;
       if (item.quantity <= 0) cart.splice(cart.indexOf(item), 1);
       updateCart();
     });
-
     itemBox.querySelector(".remove").addEventListener("click", () => {
       cart.splice(cart.indexOf(item), 1);
       updateCart();
     });
-
     cartItems.appendChild(itemBox);
   });
 
-  if (cart.length === 0)
+  if (!cart.length)
     cartItems.innerHTML = '<p class="empty-cart">Your cart is empty</p>';
   cartTotal.textContent = total;
   cartCount.textContent = count;
 }
 
 // ================= SEARCH =================
-const search = document.getElementById("search");
-const searchButton = document.getElementById("search-btn");
-
 function filterProducts() {
   const text = search.value.trim().toLowerCase();
   const filteredProducts = menuProducts.filter(
@@ -353,38 +361,19 @@ function filterProducts() {
       product.name.toLowerCase().includes(text) ||
       product.description.toLowerCase().includes(text),
   );
-
-  productsContainer.innerHTML = "";
   categoryHeading.innerHTML = `<h2>${text ? "🔎 Search Results" : categoryNames[currentCategory] || "Menu"}</h2>`;
-
+  productsContainer.innerHTML = "";
   filteredProducts
     .filter((product) => text || product.category === currentCategory)
-    .forEach((product) => {
-      const card = document.createElement("div");
-      card.className = "product-card";
-      card.dataset.category = product.category;
-      card.innerHTML = `
-        <img src="${product.image}" alt="">
-        <h3></h3><p></p>
-        <div class="product-bottom"><span class="price"></span><button class="add-cart" type="button">Add to Cart</button></div>
-      `;
-      card.querySelector("img").alt = product.name;
-      card.querySelector("h3").textContent = product.name;
-      card.querySelector("p").textContent = product.description;
-      card.querySelector(".price").textContent = `${product.price} EGP`;
-      const addButton = card.querySelector(".add-cart");
-      addButton.dataset.id = product.id;
-      addButton.dataset.name = product.name;
-      addButton.dataset.price = product.price;
-      productsContainer.appendChild(card);
-    });
+    .forEach((product) =>
+      productsContainer.appendChild(createProductCard(product)),
+    );
 
   if (!productsContainer.children.length) {
     productsContainer.innerHTML =
       '<p class="empty-cart">No matching products found.</p>';
   }
 }
-
 search.addEventListener("input", filterProducts);
 searchButton.addEventListener("click", filterProducts);
 search.addEventListener("keydown", (event) => {
@@ -396,10 +385,24 @@ document.querySelector(".hero button").addEventListener("click", () => {
   productsContainer.scrollIntoView({ behavior: "smooth" });
 });
 
-// ================= CHECKOUT / ORDERS =================
-document.querySelector(".checkout-btn").addEventListener("click", () => {
-  if (cart.length === 0) {
+// ================= CHECKOUT / SEND ORDER TO WHATSAPP =================
+checkoutButton.addEventListener("click", () => {
+  if (!cart.length) {
     alert("Your cart is empty!");
+    return;
+  }
+
+  const phone = customerPhone.value.trim();
+  // Accept common Egyptian mobile formats, including +20 and 0020.
+  const digits = phone.replace(/[^\d]/g, "");
+  const validEgyptianMobile =
+    /^(01[0125]\d{8}|201[0125]\d{8}|00201[0125]\d{8})$/.test(digits);
+
+  if (!validEgyptianMobile) {
+    alert(
+      "Please enter a valid Egyptian mobile number, for example 01012345678.",
+    );
+    customerPhone.focus();
     return;
   }
 
@@ -410,19 +413,47 @@ document.querySelector(".checkout-btn").addEventListener("click", () => {
     lineTotal: item.price * item.quantity,
   }));
   const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const orderNumber = orders.length + 1;
+  const orderDate = new Date().toLocaleString();
 
   orders.push({
-    number: orders.length + 1,
+    number: orderNumber,
     items: orderSummary,
     total,
-    date: new Date().toLocaleString(),
+    date: orderDate,
+    phone,
   });
 
-  alert(`Thank you for your order!\nOrder total: ${total} EGP`);
+  const messageLines = [
+    "Hello! I'd like to place an order from the Bazooka menu.",
+    "",
+    `Order number: #${orderNumber}`,
+    `Customer mobile: ${phone}`,
+    "",
+    ...orderSummary.map(
+      (item) => `${item.name} x${item.quantity} — ${item.lineTotal} EGP`,
+    ),
+    "",
+    `Total: ${total} EGP`,
+    "",
+    "Please confirm my order. Thank you!",
+  ];
+
+  // IMPORTANT: replace this example with the restaurant's real WhatsApp number.
+  // Use country code + number only (no +, spaces, or dashes), e.g. 2010XXXXXXXX.
+  const restaurantWhatsAppNumber = "01021278653";
+  const whatsappURL = `https://wa.me/${restaurantWhatsAppNumber}?text=${encodeURIComponent(messageLines.join("\n"))}`;
+
+  // Open WhatsApp before clearing the cart so the order details are preserved.
+  window.open(whatsappURL, "_blank", "noopener,noreferrer");
+  alert(
+    "Your order is ready in WhatsApp. Please press Send in WhatsApp to submit it to the restaurant.",
+  );
+
   cart.length = 0;
   updateCart();
+  customerPhone.value = "";
   closeShoppingCart();
-  orderOnWhatsApp();
 });
 
 // ================= PROFILE DROPDOWN =================
@@ -438,37 +469,32 @@ profileButton.addEventListener("click", (event) => {
   const isOpen = profileMenu.classList.toggle("show");
   profileButton.setAttribute("aria-expanded", String(isOpen));
 });
-
 closeProfile.addEventListener("click", () => {
   profileMenu.classList.remove("show");
   profileButton.setAttribute("aria-expanded", "false");
 });
-
 document.addEventListener("click", (event) => {
   if (!event.target.closest(".profile-choice")) {
     profileMenu.classList.remove("show");
     profileButton.setAttribute("aria-expanded", "false");
   }
 });
-
 profileMenu.addEventListener("click", (event) => event.stopPropagation());
 
 ordersLink.addEventListener("click", (event) => {
   event.preventDefault();
   profileMenu.classList.remove("show");
   profileButton.setAttribute("aria-expanded", "false");
-
-  if (orders.length === 0) {
+  if (!orders.length) {
     alert("You haven't placed any orders yet!");
     return;
   }
-
   const message = orders
     .map((order) => {
       const items = order.items
         .map((item) => `${item.name} x${item.quantity}`)
         .join(", ");
-      return `Order #${order.number} (${order.date})\n${items}\nTotal: ${order.total} EGP`;
+      return `Order #${order.number} (${order.date})\nMobile: ${order.phone}\n${items}\nTotal: ${order.total} EGP`;
     })
     .join("\n\n");
   alert(message);
@@ -480,7 +506,6 @@ favoritesLink.addEventListener("click", (event) => {
   profileButton.setAttribute("aria-expanded", "false");
   alert("You haven't added any favorites yet!");
 });
-
 logoutButton.addEventListener("click", () => {
   alert("You have been logged out!");
   profileMenu.classList.remove("show");
@@ -490,7 +515,6 @@ logoutButton.addEventListener("click", () => {
 // ================= COUNTRY =================
 const countrySelect = document.getElementById("country");
 const profileCountry = document.getElementById("profile-country");
-
 countrySelect.addEventListener("change", () => {
   profileCountry.textContent = countrySelect.value;
 });
@@ -503,33 +527,3 @@ document.getElementById("change-branch").addEventListener("click", (event) => {
 
 // Show the first category on page load.
 renderProducts("offers");
-
-function orderOnWhatsApp() {
-  if (cart.length === 0) {
-    alert("Your cart is empty!");
-    return;
-  }
-
-  // Replace this with the restaurant's WhatsApp number
-  // Egypt example: 201012345678
-  const phoneNumber = "201012345678";
-
-  let message = "Hello! I'd like to place an order:\n\n";
-  let total = 0;
-
-  cart.forEach(function (item) {
-    const quantity = item.quantity || 1;
-    const price = Number(item.price) || 0;
-
-    message += `${item.name} x ${quantity} - ${price * quantity} EGP\n`;
-    total += price * quantity;
-  });
-
-  message += `\nTotal: ${total} EGP`;
-  message += "\n\nThank you!";
-
-  const whatsappURL =
-    "https://wa.me/" + phoneNumber + "?text=" + encodeURIComponent(message);
-
-  window.open(whatsappURL, "_blank");
-}
