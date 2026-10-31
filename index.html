@@ -116,14 +116,16 @@
 
     <!-- Categories -->
     <nav class="categories" aria-label="Food categories">
-      <a href="#" class="active">Offers</a>
-      <a href="#">Chicken Sandwich</a>
-      <a href="#">Beef Sandwich</a>
-      <a href="#">Family Meal</a>
-      <a href="#">Meals</a>
-      <a href="#">Extras</a>
-      <a href="#">Appetizers</a>
-      <a href="#">Soft Drinks</a>
+      <button type="button" class="active" data-category="offers">
+        Offers
+      </button>
+      <button type="button" data-category="chicken">Chicken Sandwich</button>
+      <button type="button" data-category="beef">Beef Sandwich</button>
+      <button type="button" data-category="family">Family Meal</button>
+      <button type="button" data-category="meals">Meals</button>
+      <button type="button" data-category="extras">Extras</button>
+      <button type="button" data-category="appetizers">Appetizers</button>
+      <button type="button" data-category="drinks">Soft Drinks</button>
     </nav>
 
     <!-- Hero Section -->
@@ -133,75 +135,18 @@
         <p>Delicious chicken, fresh and crispy!</p>
         <button type="button">Order Now</button>
       </div>
-      <img
-        src="./Fooduice Recipes _ Food _ Raising cane’s chicken tenders by @hescooks Marinade ingredients_ 450 g chicken breast 120 ml milk + 1 tbsp vinegar 1 egg 1 tsp salt_.. _ Instagram"
-        alt="Crispy Chicken"
-      />
+      <img src="./The Best Fried Chicken.jpg" alt="Crispy Chicken" />
     </section>
 
-    <!-- Offers -->
-    <section class="offers">
+    <!-- Products are displayed here when a category is selected -->
+    <section class="offers" id="category-heading">
       <h2>🔥 Today's Offers</h2>
-      <div class="offer-card">
-        <h3>Chicken Meal</h3>
-        <p>Chicken Sandwich + Fries + Drink</p>
-        <strong>199 EGP</strong>
-        <button
-          class="add-cart"
-          type="button"
-          data-id="3"
-          data-name="Chicken Meal"
-          data-price="199"
-        >
-          Add to Cart
-        </button>
-      </div>
     </section>
-
-    <!-- Products -->
-    <section class="products-container" aria-label="Menu products">
-      <div class="product-card">
-        <img
-          src="./Fooduice Recipes _ Food _ Raising cane’s chicken tenders by @hescooks Marinade ingredients_ 450 g chicken breast 120 ml milk + 1 tbsp vinegar 1 egg 1 tsp salt_.. _ Instagram"
-          alt="Chicken Sandwich"
-        />
-        <h3>Chicken Sandwich</h3>
-        <p>Crispy chicken sandwich with cheese and sauce.</p>
-        <div class="product-bottom">
-          <span class="price">150 EGP</span>
-          <button
-            class="add-cart"
-            type="button"
-            data-id="1"
-            data-name="Chicken Sandwich"
-            data-price="150"
-          >
-            Add to Cart
-          </button>
-        </div>
-      </div>
-
-      <div class="product-card">
-        <img
-          src="./Fooduice Recipes _ Food _ Raising cane’s chicken tenders by @hescooks Marinade ingredients_ 450 g chicken breast 120 ml milk + 1 tbsp vinegar 1 egg 1 tsp salt_.. _ Instagram"
-          alt="Beef Burger"
-        />
-        <h3>Beef Burger</h3>
-        <p>Beef burger with cheese and Bazooka sauce.</p>
-        <div class="product-bottom">
-          <span class="price">165 EGP</span>
-          <button
-            class="add-cart"
-            type="button"
-            data-id="2"
-            data-name="Beef Burger"
-            data-price="165"
-          >
-            Add to Cart
-          </button>
-        </div>
-      </div>
-    </section>
+    <section
+      class="products-container"
+      id="products-container"
+      aria-label="Menu products"
+    ></section>
 
     <script src="./main.js"></script>
   </body>

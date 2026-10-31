@@ -474,7 +474,7 @@ button, a, select {
   display: none;
 }
 
-.categories a {
+.categories button {
   flex-shrink: 0;
   text-decoration: none;
   color: #333;
@@ -484,14 +484,23 @@ button, a, select {
   font-size: 14px;
   font-weight: 600;
   border: 1px solid #eee;
+  cursor: pointer;
   transition: .2s;
 }
 
-.categories a:hover,
-.categories a.active {
+.categories button:hover,
+.categories button.active {
   background: #e21b23;
   color: #fff;
   border-color: #e21b23;
+}
+
+#category-heading {
+  scroll-margin-top: 100px;
+}
+
+#products-container {
+  scroll-margin-top: 100px;
 }
 
 /* ================= HERO ================= */
@@ -710,4 +719,20 @@ button, a, select {
   .search-box button {
     padding: 12px 14px;
   }
+}
+
+
+/* ================= CATEGORY RESULTS ================= */
+#category-heading h2 {
+  color: #222;
+  margin-bottom: 20px;
+}
+
+#products-container .product-card {
+  transition: transform .2s, box-shadow .2s;
+}
+
+#products-container .product-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, .12);
 }
